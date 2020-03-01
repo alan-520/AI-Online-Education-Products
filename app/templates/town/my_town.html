@@ -1,0 +1,163 @@
+{% extends '/basic/BasicConfig.html' %}
+
+{% block styles%}
+{{ super() }}
+<link href="/static/style/HUD.css" rel="stylesheet">
+<link href="/static/style/font.css" rel="stylesheet">
+<link rel="stylesheet" href="/static/style/town/town.css">
+<link rel="stylesheet" href="{{url_for('static',filename='style/game/pop_pvp.css') }}">
+<link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:300,400,600,700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block head_scripts %}
+{{ super() }}
+<script src="../../static/scripts/town/town.js"></script>
+<script src="../../static/scripts/town/pop_page.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{url_for('static',filename='scripts/game/pop_pvp.js')}}"></script>
+<script>
+    let c_code = "{{code}}";
+    let user_name = "{{user_name}}";
+</script>
+<script>
+let username = '{{ username }}';
+{%- if level %}
+let level = {{ level.level }};
+let exp = {{ level.exp }};
+let next_level = {{ level.next_level }};
+let rate = exp / next_level * 100;
+$('.HUD-process').css('width', exp.toString()+'%');
+$('.HUD-heading').text(username);
+$('#level').text(level);
+$('#next_exp').text(next_level);
+{%- else %}
+$('.HUD-process').css('width', '0');
+$('.HUD-heading').text(username);
+$('#level').text(1);
+$('#next_exp').text(100);
+{%- endif %}
+</script>
+{% endblock %}
+
+{% block content%}
+<div class="containers"></div>
+{% include('/basic/nav_buttons.html')%}
+<div class="HUD">
+<div class="HUD-avatar">
+    <img src="{%- if avatar  %}{{ avatar }}{%- endif %}" alt="" height="100%" width="100%">
+</div>
+<div class="HUD-status">
+    <div class="offset">
+        <div class="HUD-heading">XIN YUAN</div>
+        <div class="HUD-level">Lv <span id="level">6</span></div>
+    </div>
+    {%- if course %}
+    <div class="HUD-exp">
+        <div class="HUD-exp-shadow"></div>
+        <span class="HUD-p-content"><b>next exp: <span id="next_exp">100</span></b></span>
+        <div class="HUD-process"></div>
+    </div>
+    {%- endif %}
+</div>
+</div>
+<div class="character">
+    <img src="/static/image/town/c_town.png" alt="" height="100%" width="100%">
+</div>
+<div class="field" data-toggle="modal" data-target="#exampleModal">
+    <img src="/static/image/town/field.png" alt="" height="100%" width="100%">
+</div>
+<div id="chats" style="display:none">
+    <input type="text" class="form-control chat-input" placeholder="You can chat here....">
+    <div class="chat_record"></div>
+    <div class="user_list">
+    </div>  {# add new user #}
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="field_window">
+        <div class="fw_heading">
+            <div class="play_select">
+                <div class="col-lg-4 single_btn"><b>Single</b></div>
+                <div class="col-lg-4 mids_btn"><div class="slash"></div></div>
+                <div class="col-lg-4 multiple_btn" id="pvp_btn" data-toggle="modal" data-target="#pvp_Modal"><b>Multiple</b></div>
+            </div>
+        </div>
+        <div class="fw_body">
+            <div id="single_content">
+                <div class="single_heading"><a id="beginner">beginner</a><span>   |   </span><a id="expert">expert</a></div>
+                <div id="beginner_content" class="course_group" id="accordion">
+                    {%- for i in chapters %}
+                    <div class="course_panel">
+                        <div class="course_bar" data-toggle="collapse" data-parent="#accordion" href="#{{ i._id }}">{{ i.name }}</div>
+                        <div id="{{ i._id }}" class="course_bar_body collapse">
+                            <ul class="node_list">
+                                {%- for x in get_node({'chapter': i._id}) %}
+                                <li id="{{ x._id }}"><a href="/game/beginner/{{ x._id }}">{{ x.name }}</a></li>
+                                {%- endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {%- endfor %}
+                </div>
+                <div id="expert_content" class="course_group">
+                    {%- for i in chapters %}
+                    <div class="course_panel">
+                        <div class="course_bar" id="#m{{ i._id }}"><a href="/game/expert/{{ i._id }}">{{ i.name }}</a></div>
+                    </div>
+                    {%- endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="pvp_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="pvp_Modal" class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">PVP Mode</h4>
+            </div>
+            <div class="modal-body" >
+
+            </div>
+            <div class="modal-footer container-fluid">
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+                <div class="col-xs-10">
+                    <table class="pull-right">
+                        <tr>
+                            <th>
+                                <span class="">Numbers of Player</span>
+                            </th>
+                            <th width="125px">
+                                <div class="btn-group" style="width: 100%">
+                                    <button type="button" class="btn btn-default dropdown-toggle room_type" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false" style="width: 100%">
+                                        <span id="room_span">1 vs 1</span> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">1 vs 1</a></li>
+<!--                                        <li><a href="#">2 vs 2</a></li>-->
+                                        <li><a href="#">Battlegrounds</a></li>
+                                    </ul>
+                                </div>
+                            </th>
+                            <th>
+                                 <button type="button" class="btn btn-primary create_room" onclick="new_room(this)">Create Room</button>
+                            </th>
+                            <th>
+                                 <button type="button" class="btn btn-default leave_room" disabled="disabled" onclick="rooms.leave_room()">Leave Room</button>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends '/basic/BasicConfig.html' %}
+{% from 'game/marco.html' import option,timer,mcq,csv %}
+{% block title%}
+    {% if type and node_name %}
+    {{type}}-{{node_name}}!
+    {% else %}
+    Game!
+    {% endif %}
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='style/game/animate.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='lib/game/FlipClock-master/compiled/flipclock.css')}}">
+<!--<link rel="stylesheet" href="{{url_for('static',filename='lib/game/dist/loading-bar.min.css')}}">-->
+<link rel="stylesheet" href="{{url_for('static',filename='style/game/game.css') }}">
+<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block head_scripts %}
+{{ super() }}
+<script src="{{url_for('static',filename='scripts/game/game.js')}}"></script>
+<script src="{{url_for('static',filename='scripts/game/game_feedback.js')}}"></script>
+<script src="{{url_for('static',filename='lib/game/FlipClock-master/compiled/flipclock.min.js')}}"></script>
+<!--<script src="{{url_for('static',filename='lib/game/dist/loading-bar.min.js')}}"></script>-->
+<script src="{{url_for('static',filename='scripts/basic.js')}}"></script>
+{% endblock %}
+
+{% if type and node_name %}
+    {%set title_name=type+"-"+node_name %}
+{% else %}
+{%set title_name="Game!"%}
+{% endif %}
+
+{% block scripts %}
+<script>
+    let x = {
+        {%- for x in data %}
+            "{{x._id}}": {% if x.correct_answer is number %}{{x.correct_answer}}{% else %}"{{x.correct_answer}}"{% endif %},
+        {%- endfor %}
+    };
+
+    let level_info = {
+        {%- if level_info %}
+            "course": "{{ level_info[0].course }}",
+            "level": {{ level_info[0].level }},
+            "exp": {{ level_info[0].exp }},
+            "next_level": {{ level_info[0].next_level }},
+        {%- else %}
+            "level": 1,
+            "exp": 0,
+            "next_level": 100,
+        {%- endif %}
+    };
+
+    let exp = level_info.exp;
+</script>
+{% endblock %}
+
+{% block content %}
+{% include('/basic/nav_buttons.html')%}
+<div class="containers"></div>
+<div class="container-fluid vw-100" >
+    <div class="row justify-content-center">
+        <div class="col-lg-2 col-md-3"></div>
+        <div class="col-lg-8 col-md-12 mh-100vh middle-col">
+            <div class="row">
+                {{ timer() }}
+            </div>
+            <div class="person_monster">
+                <div id="person">
+                    <img src="\static\image\game\c_single.png" alt="" height="410px" width="210px">
+                </div>
+                <div id="monster">
+                    <img src="\static\image\game\monster_1.png" alt="" height="251px">
+                </div>
+            </div>
+            <div class="row question_borad">
+                <div class="col-12 all-questions" q-num="{{data|length}}">
+                    {% for d in data %}
+                        {% set Qloop = loop %}
+                        {% if d['type'] == 'mcq' %}
+                            {{mcq(Qloop,d)}}
+                        {% elif d['type'] == 'csv' %}
+                            {{csv(Qloop,d)}}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <span class="tips">Do not know how to solve?</span>
+                <button class="btn btn-primary nodes" onclick="window.open('/knowledge_structure/{{ node_id }}')">Link to knowledge node</button>
+                <button class="btn btn-primary next" onclick="nextQ(this)">Next</button>
+            </div>
+        </div>
+<!--        <div class="col-lg-1 .d-md-none"></div>-->
+    </div>
+</div>
+{% include "/game/feedback.html" ignore missing%}
+{% endblock %}

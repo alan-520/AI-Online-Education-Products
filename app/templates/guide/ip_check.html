@@ -1,0 +1,161 @@
+{% extends '/basic/BasicConfig.html' %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block content %}
+    <style>
+        .out{
+            position:absolute;
+            top:0;
+            left:0;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+            min-height: 605px;
+            min-width: 1024px;
+            background-image: url('/static/image/guide/map-06.png');
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: auto 100%;
+            overflow: scroll;
+        }
+        .containers{
+            position: relative;
+            width: 1000px;
+            height: 550px;
+            margin: auto;
+            margin-top: 110px;
+            background: #ffffff;
+            color: #000000;
+            border-radius: 15px;
+
+        }
+
+        .form-control{
+            width: 400px;
+        }
+
+        .submit{
+            background-color: rgb(0, 77, 153);
+            color: white;
+            font-family: "Roboto Light";
+            margin-top: 20px;
+            height: 45px;
+            border-radius: 10px;
+        }
+        .create-role{
+            position: absolute;
+            margin-left: 70px;
+            top: 30%;
+            float: left;
+        }
+
+        .img {
+            width: 92px;
+            margin-left: 5px;
+        }
+        .small-boy{
+            background: url("../../static/image/guide/big.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 350px;
+            height: 450px;
+            margin-left: 570px;
+            margin-top: 50px;
+        }
+        .file{
+            float: right;
+            margin-top: 90px;
+            margin-left: 210px;
+        }
+        .otherfile{
+            float: left;
+            margin-top: 20px;
+        }
+        .flash{
+            position: fixed;
+            top: 53px;
+            width: 700px;
+            text-align: center;
+            left: 500px;
+        }
+        #background-pop{
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        #div-pop{
+            background:#ffffff;
+            width:1030px;
+            height: 610px;
+            z-index: 1;
+            margin: 5% auto;
+            overflow: auto;
+            border-radius: 10px;
+        }
+        .div-content{
+            width: auto;
+            overflow: auto;
+            height: 500px;
+        }
+
+        .div-content::-webkit-scrollbar{
+            display: none;
+        }
+
+        .div-top1{
+            width: 100%;
+            height: 80px;
+            background-color: rgb(255, 184, 77);
+            color: #ffffff;
+        }
+        #close-button{
+            position: relative;
+            right: 0;
+            color: white;
+            margin-left: 970px ;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        #close-button:hover{
+            color: #ba3a13;
+        }
+    </style>
+    <body>
+    <div class="out">
+        <div class="containers">
+            <div class="row proff">
+                <div class="create-role">
+                    <form class="form" method="POST" enctype=multipart/form-data>
+                        {{ form.hidden_tag() }}
+                        <div class="otherfile">
+                            {{ wtf.form_field(form.username, class="form-control username") }}
+                            {{ wtf.form_field(form.submit, class="form-control submit") }}
+                        </div>
+
+                    </form>
+                </div>
+                <div class="small-boy">
+
+                </div>
+            </div>
+        </div>
+        </div>
+        <div id="background-pop">
+            <div id="div-pop">
+                <div class="div-top1">
+                    <span id="close-button">back</span>
+                    <p class="top-text">Here is course selection guide!</p>
+                </div>
+                <div class="div-content">
+                    <br>
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}

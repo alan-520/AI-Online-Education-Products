@@ -1,0 +1,35 @@
+body {
+    padding-top: 80px;
+    background-color: rgb(240, 240, 240);
+}
+
+.logo-center {
+    position: fixed;
+    color: #ba3a13;
+    font-size: 50px;
+    left: calc(50% - 95px);
+    top: 10px;
+    text-shadow: 1px 2px 1px #cccccc;
+}
+
+.nav-white {
+    color: #ba3a13;
+    padding: 0;
+}
+
+.nav-white > li > a {
+    color: #ba3a13;
+    text-decoration: none;
+    padding: 15px;
+}
+
+.nav-white >li {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    list-style: none;
+}
+
+.nav-white >li:hover {
+    background-color: wheat;
+}

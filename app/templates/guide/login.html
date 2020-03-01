@@ -1,0 +1,146 @@
+
+
+{% extends '/basic/BasicConfig.html' %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+<link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:300,400,600,700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <style>
+        .out{
+            position:absolute;
+            top:0;
+            left:0;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+            min-height: 605px;
+            min-width: 1024px;
+            background-image: url('/static/image/guide/map-06.png');
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: auto 100%;
+            overflow: scroll;
+        }
+
+        .out::-webkit-scrollbar {
+            display: none;
+        }
+
+        .containers{
+            position: relative;
+            width: 900px;
+            height: 550px;
+            margin: auto;
+            background: #ffffff;
+            color: #000000;
+            border-radius: 15px;
+            margin-top: 110px;
+        }
+        .form-control{
+            width: 300px;
+        }
+        .submit{
+            background-color: rgb(0, 102, 204);
+            color: white;
+            height: 45px;
+            margin-top: 35px;
+            border-radius: 10px;
+        }
+        .form{
+            margin-top: 30px;
+        }
+        .profile{
+            float: left;
+            margin-left: 90px;
+            margin-top: 60px;
+            width: 500px;
+        }
+        .img{
+            position: absolute;
+            background: url("../../static/image/guide/big.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 350px;
+            height: 450px;
+            top: 55px;
+            left: 480px;
+        }
+        .flash{
+            position: absolute;
+            top: 53px;
+            width: 700px;
+            text-align: center;
+            left: 500px;
+        }
+
+        .lsgroup {
+            width:60%;
+        }
+
+        .logins {
+            background-color: #23AEB5;
+            color: white;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            width: 50%;
+            font-size: 12pt;
+        }
+
+        .logins:hover {
+            background-color: #7DF0FF;
+        }
+    </style>
+    <body>
+        <div class="out">
+            <div class="row flash">
+            <div class="col-md-8">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category}}">
+                             {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <div class="containers">
+            <div class="profile row">
+                <div class="">
+                    <h2 style="font-family: 'Roboto Light'; font-size: 30px; font-weight: bold; margin-left: 35px; margin-bottom: 55px">Log In To Play</h2>
+                    <form class="form" method="POST" enctype=multipart/form-data>
+                        {{ form.hidden_tag() }}
+                        {{ wtf.form_field(form.username, class="form-control name") }}
+                        {{ wtf.form_field(form.password, class="form-control password") }}
+{#                        {{ wtf.form_field(form.submit, class="form-control submit") }}#}
+                        <div class="btn-group lsgroup" role="group" aria-label="Basic example">
+                            <input class="btn btn-secondary logins" id="submit" name="submit" type="submit" value="Log in">
+                            <button type="button" class="btn btn-secondary logins" onclick="window.open('/guide/signup', '_self')">Sign up</button>
+                        </div>
+                        {{ wtf.form_field(form.rem, class="form-control rem") }}
+                    </form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            Password forget?
+                            <a href="{{ url_for('guide.password_reset') }}">
+                                Click here
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="img">
+
+            </div>
+        </div>
+        </div>
+
+    </body>
+
+{% endblock %}

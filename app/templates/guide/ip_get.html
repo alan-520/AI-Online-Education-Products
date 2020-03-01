@@ -1,0 +1,131 @@
+{% extends '/basic/BasicConfig.html' %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+    <style>
+        .out{
+            position:absolute;
+            top:0;
+            left:0;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+            min-height: 605px;
+            min-width: 1024px;
+            background-image: url('/static/image/guide/map-06.png');
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: auto 100%;
+            overflow: scroll;
+        }
+        .containers{
+            position: relative;
+            width: 1000px;
+            height: 550px;
+            margin: auto;
+            margin-top: 110px;
+            background: #ffffff;
+            color: #000000;
+            border-radius: 15px;
+
+        }
+        p{
+            font-size: 30px;
+            font-weight: bold;
+        }
+        @-webkit-keyframes sheen {
+    0% {
+        -webkit-transform: skewY(-45deg) translateX(0);
+        transform: skewY(-45deg) translateX(0);
+    }
+    100% {
+        -webkit-transform: skewY(-45deg) translateX(12.5em);
+        transform: skewY(-45deg) translateX(12.5em);
+    }
+}
+        .bbb{
+            position: relative;
+            left: 50%;
+            margin-top: 40px;
+
+        }
+@keyframes sheen {
+    0% {
+        -webkit-transform: skewY(-45deg) translateX(0);
+        transform: skewY(-45deg) translateX(0);
+    }
+    100% {
+        -webkit-transform: skewY(-45deg) translateX(12.5em);
+        transform: skewY(-45deg) translateX(12.5em);
+    }
+}
+        .wrapper1 {
+    position: relative;
+    display: block;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+
+.button {
+    padding: 0.55em 1.5em;
+    text-align: center;
+    text-decoration: none;
+    color: #c43c35;
+    border: 2px solid #c43c35;
+    font-size: 14px;
+    display: inline-block;
+    border-radius: 0.3em;
+    transition: all 0.5s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+.button:before {
+    content: "";
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 100%;
+    width: 3em;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -4.5em;
+    -webkit-transform: skewX(-45deg) translateX(0);
+    transform: skewX(-45deg) translateX(0);
+    transition: none;
+}
+.button:hover {
+    background-color: #ffb42e;
+    color: #fff;
+}
+.button:hover:before {
+    -webkit-transform: skewX(-45deg) translateX(13.5em);
+    transform: skewX(-45deg) translateX(13.5em);
+    transition: all 0.6s ease-in-out;
+}
+        .map{
+            font-size: 30px;
+            font-weight: bold;
+        }
+    </style>
+    <body>
+    <div class="out">
+        <div class="containers">
+            <div class="ip_content" style="position: relative; text-align: center; top: 15%">
+                <p>当前的IP地址： {{ query }}</p>
+                <p>地理位置： {{ country }}</p>
+                <p>运营商： {{ isp }}</p>
+                <p>时区： {{ time_zone }}</p>
+                <p>地区中心经纬度： <a class="map" href="http://www.gpsspg.com/maps.htm">{{ wrap }}</a></p>
+                <div class="bbb">
+                    <div class="wrapper1">
+                        <a class="button" href="{{ url_for('guide.ip_check') }}">返回</a>
+                    </div>
+                </div><br>
+            </div>
+        </div>
+        </div>
+
+    </body>
+{% endblock %}

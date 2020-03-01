@@ -1,0 +1,114 @@
+{% extends '/basic/BasicConfig.html' %}
+
+{% block content%}
+<head>
+    <style>
+        ::-webkit-scrollbar { width: 0 !important; }
+    </style>
+</head>
+<body style="background: none;">
+    <div style="position:absolute;width:1200px;height:700px;bottom:100px;left:150px;">
+        <img src="{{url_for('static', filename='image/profile/book.png')}}" width="100%" height="100%" style="z-index:1;">
+        <div style="position:absolute;z-index:3;top: 80px; left:40px; padding: 20px">
+            <div class="row" style="margin-left:30px;">
+                <div class="col-xs-6" style="margin-top:20px;">
+                    <div class="col-xs-1"><img src = "{{ img }}" style="width:200px;height:200px;margin-left:-10px;"></div>
+                    <div class="col-xs-8" style="width:455px;">
+                        <div class="panel-group" id="accordion" style="margin-left:170px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading" style="background-color:#F14A25;color:white;">
+                                    <p class="panel-title" >
+                                            ROLENAME :
+                                    </p>
+                                </div>
+                                    <div class="panel-body" style="color:#F14A25;">
+                                        {{ username }}
+                                    </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading" style="background-color:#F14A25;color:white;">
+                                    <p class="panel-title">
+                                            EMAIL :
+                                    </p>
+                                </div>
+                                <div class="panel-body" style="color:#F14A25;">
+                                    {{ email }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6" style="margin-top:-50px;">
+                    <div class="panel panel-info" style="margin-left:10px;">
+                        <div class="panel-heading" style="background-color:#F14A25;color:white;">
+                            <p class="panel-title">
+                                    COURSE CAREER :
+                            </p>
+                        </div>
+                        <div class="panel-body" style="color:#F14A25;height:200px;background-color:F15A24;overflow-y:auto;overflow-x: hidden;">
+                            <div class = "row" align = "center">
+                                <div class = "col-xs-3" align="center">
+                                    CODE
+                                </div>
+                                <div class = "col-xs-6" align="center">
+                                    NAME
+                                </div>
+                                <div class = "col-xs-3" align="center">
+                                    FINISHED
+                                </div>
+                            </div>
+                                {% for i in complete%}
+                                    <div class = "row" align="center" style="margin-top:10px;">
+                                        <div class = "col-xs-3" align="center">
+                                            <p align="center">{{ get_course_code(i.course) }}</p>
+                                        </div>
+                                        <div class = "col-xs-6" align="center">
+                                            <p align="center">{{ get_course_name(i.course) }}</p>
+                                        </div>
+                                        <div class = "col-xs-3" align="center">
+                                            <p align="center">{{ i.overall }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                        </div>
+                    </div>
+                    <div class="panel panel-info" style="margin-left:10px;">
+                        <div class="panel-heading" style="background-color:#F14A25;color:white;">
+                            <p class="panel-title">
+                                    LEVEL :
+                            </p>
+                        </div>
+                        <div class="panel-body" style="color:#F14A25;height:200px;background-color:F15A24;overflow-y:auto;overflow-x: hidden;">
+                            <div class = "row" align = "center">
+                                <div class = "col-xs-3" align="center">
+                                CODE
+                                </div>
+                                <div class = "col-xs-6" align="center">
+                                NAME
+                                </div>
+                                <div class = "col-xs-3" align="center">
+                                LEVEL
+                                </div>
+                            </div>
+                            {% for i in levels%}
+                                <div class = "row" align="center" style="margin-top:10px;">
+                                    <div class = "col-xs-3" align="center">
+                                        <p align="center">{{ get_course_code(i.course) }}</p>
+                                    </div>
+                                    <div class = "col-xs-6" align="center">
+                                        <p align="center">{{ get_course_name(i.course) }}</p>
+                                    </div>
+                                    <div class = "col-xs-3" align="center">
+                                        <p align="center">{{ i.level }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img style="position:absolute; z-index:2; left: -150px; bottom: -100px; height: 380px; width: 350px" src="{{url_for('static', filename='image/profile/c_question.png')}}" width="100%" height="100%"/>
+    </div>
+</body>
+{% endblock %}
